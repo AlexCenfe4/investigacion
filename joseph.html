@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diseñando Futuros Digitales</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #dcedc8, #c5e1a5); /* Light green gradient */
+            margin: 0;
+            padding: 0;
+            color: #33691e; /* Darker green text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #689f38; /* A medium green for the header */
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 960px;
+        }
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        p {
+            line-height: 1.6;
+        }
+        h2 {
+            cursor: pointer;
+            background: #aed581; /* A lighter green for section titles */
+            color: #33691e;
+            margin: 10px 0 0 0;
+            padding: 18px 25px;
+            border-top: 1px solid #8bc34a;
+            user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease-in-out;
+            border-radius: 6px;
+            font-size: 1.8em;
+            width: 90%;
+            max-width: 960px;
+            text-align: left;
+            display: flex; /* Para alinear flecha */
+            justify-content: space-between; /* Para alinear flecha */
+            align-items: center; /* Para alinear flecha */
+        }
+        h2:hover {
+            background-color: #8bc34a; /* Darker hover effect */
+            color: white;
+            transform: scale(1.02);
+        }
+        /* Estilo para la flecha indicadora de acordeón */
+        h2::after {
+            content: '\25BC'; /* Código Unicode para flecha hacia abajo */
+            font-size: 0.8em;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        h2.active::after {
+            content: '\25B2'; /* Código Unicode para flecha hacia arriba cuando está activo */
+            transform: rotate(0deg); /* No rotar, solo cambiar icono */
+        }
+
+        section {
+            padding: 0 40px; /* Inicialmente 0 padding vertical para colapsar */
+            background: #f0f4c3; /* Fondo verde claro para el contenido desplegado */
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            border-radius: 0 0 6px 6px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 960px;
+            /* Estilos para el efecto de despliegue */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, padding 0.7s ease-out; /* Transición más larga para un efecto suave */
+        }
+        section.active {
+            max-height: 2000px; /* Suficientemente grande para contener todo el contenido */
+            padding: 25px 40px; /* Restaurar el padding vertical cuando está activo */
+            overflow: visible; /* Asegurarse de que el contenido sea visible */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+        }
+        ul {
+            margin-left: 30px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        footer {
+            background-color: #8bc34a; /* Footer in a similar green tone */
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            margin-top: 30px;
+            border-radius: 0 0 8px 8px;
+            width: 90%;
+            max-width: 960px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        }
+        .test-question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9fbe7; /* Very light green for test questions */
+            border-radius: 6px;
+            border: 1px solid #e6ee9c;
+        }
+        .test-question p {
+            margin: 0 0 10px 0;
+            font-weight: bold;
+            color: #558b2f; /* Slightly darker green for question text */
+        }
+        .test-question label {
+            display: block;
+            margin-left: 25px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            user-select: none;
+            color: #43a047;
+        }
+        .btn-submit {
+            background-color: #4caf50; /* A brighter green for the submit button */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-submit:hover {
+            background-color: #388e3c; /* Darker shade on hover */
+            transform: translateY(-2px);
+        }
+        .test-result {
+            background-color: #c8e6c9;
+            color: #1b5e20;
+            padding: 15px;
+            margin-top: 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+            border: 1px solid #a5d6a7;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Diseñando Futuros Digitales</h1>
+    <p>Explorando la creatividad, la innovación y las herramientas del mañana</p>
+</header>
+
+<h2 onclick="toggleSection('introduccion', this)">El arte de la innovación digital</h2>
+<section id="introduccion">
+    <img src="https://via.placeholder.com/800x400/9ccc65/ffffff?text=Innovación+Digital" alt="Imagen ilustrativa de innovación digital" />
+    <p>El diseño de futuros digitales va más allá de la simple estética; implica la creación de experiencias significativas y soluciones que resuelvan problemas complejos en el entorno digital. Desde interfaces de usuario intuitivas hasta sistemas completos que interactúan con tecnologías emergentes como la Inteligencia Artificial y el Internet de las Cosas, esta disciplina se centra en anticipar las necesidades y comportamientos de los usuarios.</p>
+    
+    <p>Se trata de un campo multidisciplinar que fusiona principios de diseño gráfico, interacción, investigación de usuario, y conocimientos tecnológicos para construir los cimientos de cómo interactuaremos con el mundo digital en el mañana. Es un proceso iterativo de ideación, prototipado y validación constante.</p>
+    
+    <p>Grandes empresas como Apple, Google y empresas emergentes de Silicon Valley son pioneras en la aplicación de estos principios para crear productos y servicios que transforman la vida diaria.</p>
+    
+    <img src="https://via.placeholder.com/800x400/8bc34a/ffffff?text=Proceso+de+Design+Thinking" alt="Diagrama del proceso de Design Thinking" />
+    
+    <p><strong>Orígenes y evolución:</strong> El diseño digital ha evolucionado desde los primeros gráficos por computadora hasta convertirse en una disciplina estratégica que define la experiencia del cliente y la innovación de productos en la era de la información.</p>
+</section>
+
+<h2 onclick="toggleSection('principios', this)">Principios clave en el diseño digital</h2>
+<section id="principios">
+    <img src="https://via.placeholder.com/800x400/aed581/33691e?text=Principios+de+Diseño+UX" alt="Iconos representando principios de UX" />
+    <p>Para diseñar futuros digitales exitosos, es fundamental basarse en principios sólidos que guíen el proceso:</p>
+    <ul>
+        <li><strong>Centrado en el usuario:</strong> Poner las necesidades y expectativas del usuario en el centro de cada decisión de diseño.</li>
+        <li><strong>Accesibilidad:</strong> Asegurar que los productos y servicios digitales sean utilizables por personas con diversas capacidades y discapacidades.</li>
+        <li><strong>Simplicidad:</strong> Crear soluciones que sean fáciles de entender y usar, eliminando complejidades innecesarias.</li>
+        <li><strong>Coherencia:</strong> Mantener un lenguaje visual y de interacción unificado en todas las plataformas y puntos de contacto.</li>
+        <li><strong>Iteración y mejora continua:</strong> Reconocer que el diseño es un proceso en constante evolución, con retroalimentación y adaptaciones.</li>
+    </ul>
+    
+    <img src="https://via.placeholder.com/800x400/c5e1a5/33691e?text=Ciclo+de+Iteración+y+Mejora" alt="Animación del ciclo de iteración" />
+    
+    <p>Estos principios son la base para construir experiencias digitales que no solo sean atractivas, sino también funcionales y significativas.</p>
+</section>
+
+<h2 onclick="toggleSection('herramientas', this)">Herramientas y tecnologías</h2>
+<section id="herramientas">
+    <img src="https://via.placeholder.com/800x400/dcedc8/33691e?text=Herramientas+de+Diseño+Digital" alt="Collage de logos de herramientas de diseño" />
+    <p>El arsenal de un diseñador digital moderno es vasto e incluye herramientas para cada etapa del proceso:</p>
+    <ul>
+        <li><strong>Software de diseño gráfico y UI/UX:</strong> Figma, Sketch, Adobe XD, Photoshop, Illustrator.</li>
+        <li><strong>Herramientas de prototipado y wireframing:</strong> InVision, Marvel, Proto.io.</li>
+        <li><strong>Plataformas de desarrollo web y móvil:</strong> HTML, CSS, JavaScript, React, Swift, Kotlin.</li>
+        <li><strong>Software de modelado 3D y realidad extendida (XR):</strong> Blender, Unity, Unreal Engine.</li>
+        <li><strong>Plataformas de análisis de datos y feedback de usuario:</strong> Google Analytics, Hotjar, UserTesting.</li>
+    </ul>
+    <img src="https://via.placeholder.com/800x400/9ccc65/ffffff?text=Código+y+Desarrollo" alt="Imagen abstracta de código de programación" />
+    <p>La elección de la herramienta depende del proyecto y la fase de diseño, pero la comprensión de los principios fundamentales es siempre más importante que el dominio de una herramienta específica.</p>
+</section>
+
+<h2 onclick="toggleSection('tendencias', this)">Tendencias y el futuro del diseño digital</h2>
+<section id="tendencias">
+    <img src="https://via.placeholder.com/800x400/8bc34a/ffffff?text=Tendencias+Tecnológicas+Futuras" alt="Ilustración abstracta de tendencias tecnológicas futuras" />
+    <p>El diseño digital es un campo en constante evolución, impulsado por nuevas tecnologías y cambios en el comportamiento humano. Algunas tendencias clave incluyen:</p>
+    <ul>
+        <li><strong>Inteligencia Artificial y Machine Learning en diseño:</strong> Herramientas que automatizan tareas, personalizan experiencias y generan contenido.</li>
+        <li><strong>Diseño para Realidad Aumentada (RA) y Realidad Virtual (RV):</strong> Creación de interfaces y experiencias inmersivas.</li>
+        <li><strong>Diseño de voz y interfaces conversacionales (VUI/CUI):</strong> Interacción a través de comandos de voz y texto.</li>
+        <li><strong>Microinteracciones:</strong> Pequeños detalles animados que mejoran la usabilidad y el deleite del usuario.</li>
+        <li><strong>Diseño sostenible:</strong> Creación de soluciones digitales que minimicen el impacto ambiental y fomenten el consumo responsable.</li>
+    </ul>
+    <img src="https://via.placeholder.com/800x400/aed581/33691e?text=Realidad+Aumentada+y+Diseño" alt="Ejemplo de interacción con Realidad Aumentada" />
+    <p>El futuro del diseño digital estará marcado por una mayor integración de tecnologías inteligentes, experiencias más inmersivas y un enfoque creciente en la ética y la sostenibilidad.</p>
+</section>
+
+<h2 onclick="toggleSection('casos', this)">Casos de éxito y su impacto</h2>
+<section id="casos">
+    <img src="https://via.placeholder.com/800x400/c5e1a5/33691e?text=Casos+de+Éxito+en+Diseño" alt="Imagen con logos de empresas exitosas en diseño digital" />
+    <p>Numerosos productos y servicios digitales han transformado nuestras vidas gracias a un diseño excepcional:</p>
+    <ul>
+        <li><strong>Spotify:</strong> Su interfaz intuitiva y recomendaciones personalizadas revolucionaron el consumo de música.</li>
+        <li><strong>Airbnb:</strong> El diseño de su plataforma facilita la conexión entre anfitriones y viajeros, creando una experiencia de reserva fluida.</li>
+        <li><strong>Slack:</strong> Simplificó la comunicación empresarial con un diseño limpio y funcionalidades enfocadas en la colaboración.</li>
+        <li><strong>Google Maps:</strong> Su interfaz ha hecho que la navegación y la exploración del mundo sean accesibles para millones.</li>
+    </ul>
+    <img src="https://via.placeholder.com/800x400/dcedc8/33691e?text=Interfaz+de+Usuario+Intuitiva" alt="Mockup de una interfaz de aplicación bien diseñada" />
+    <p>Estos ejemplos demuestran cómo un diseño bien ejecutado puede generar un impacto significativo en la adopción, la satisfacción del usuario y el éxito empresarial.</p>
+</section>
+
+<h2 onclick="toggleSection('test1', this)">Test 1 - Conceptos generales</h2>
+<section id="test1">
+    <form id="quizForm1" onsubmit="return submitQuiz('quizForm1', 'result1')">
+        <div class="test-question">
+            <p>1. ¿Qué es el diseño de futuros digitales?</p>
+            <label><input type="radio" name="q1" value="a"> Solo estética de sitios web</label>
+            <label><input type="radio" name="q1" value="b"> Creación de experiencias y soluciones digitales</label>
+            <label><input type="radio" name="q1" value="c"> Únicamente programación de software</label>
+        </div>
+        <div class="test-question">
+            <p>2. ¿Cuál es un enfoque central del diseño digital?</p>
+            <label><input type="radio" name="q2" value="a"> Anticipar necesidades de usuarios</label>
+            <label><input type="radio" name="q2" value="b"> Ignorar la retroalimentación</label>
+            <label><input type="radio" name="q2" value="c"> Solo seguir tendencias visuales</label>
+        </div>
+        <div class="test-question">
+            <p>3. ¿Qué disciplinas se fusionan en el diseño digital?</p>
+            <label><input type="radio" name="q3" value="a"> Diseño gráfico, interacción, investigación de usuario</label>
+            <label><input type="radio" name="q3" value="b"> Historia, geografía, literatura</label>
+            <label><input type="radio" name="q3" value="c"> Contabilidad, marketing, leyes</label>
+        </div>
+        <div class="test-question">
+            <p>4. ¿Por qué es un proceso iterativo?</p>
+            <label><input type="radio" name="q4" value="a"> Se basa en ideación, prototipado y validación constante</label>
+            <label><input type="radio" name="q4" value="b"> Se hace una vez y no se revisa</label>
+            <label><input type="radio" name="q4" value="c"> No requiere feedback</label>
+        </div>
+        <div class="test-question">
+            <p>5. ¿Qué rol tiene el diseño en la era de la información?</p>
+            <label><input type="radio" name="q5" value="a"> Define experiencia del cliente e innovación</label>
+            <label><input type="radio" name="q5" value="b"> Es solo un complemento estético</label>
+            <label><input type="radio" name="q5" value="c"> No tiene impacto estratégico</label>
+        </div>
+        <div class="test-question">
+            <p>6. ¿Qué significa "centrado en el usuario"?</p>
+            <label><input type="radio" name="q6" value="a"> Poner al usuario en el centro del diseño</label>
+            <label><input type="radio" name="q6" value="b"> Diseñar solo para diseñadores</label>
+            <label><input type="radio" name="q6" value="c"> Ignorar la opinión del usuario</label>
+        </div>
+        <div class="test-question">
+            <p>7. ¿Qué es la accesibilidad en diseño?</p>
+            <label><input type="radio" name="q7" value="a"> Que los productos sean utilizables por diversas capacidades</label>
+            <label><input type="radio" name="q7" value="b"> Diseñar solo para personas sin discapacidades</label>
+            <label><input type="radio" name="q7" value="c"> Solo estética visual</label>
+        </div>
+        <div class="test-question">
+            <p>8. ¿Qué implica la simplicidad en diseño?</p>
+            <label><input type="radio" name="q8" value="a"> Eliminar complejidades innecesarias</label>
+            <label><input type="radio" name="q8" value="b"> Añadir muchas funciones sin orden</label>
+            <label><input type="radio" name="q8" value="c"> Hacerlo difícil de usar</label>
+        </div>
+        <div class="test-question">
+            <p>9. ¿Cuál es un principio fundamental del diseño?</p>
+            <label><input type="radio" name="q9" value="a"> Coherencia</label>
+            <label><input type="radio" name="q9" value="b"> Inconsistencia</label>
+            <label><input type="radio" name="q9" value="c"> Caos visual</label>
+        </div>
+        <div class="test-question">
+            <p>10. ¿Por qué es importante la mejora continua?</p>
+            <label><input type="radio" name="q10" value="a"> El diseño es un proceso en constante evolución</label>
+            <label><input type="radio" name="q10" value="b"> Una vez terminado, no se toca más</label>
+            <label><input type="radio" name="q10" value="c"> No hay necesidad de feedback</label>
+        </div>
+        <button type="submit" class="btn-submit">Enviar Test 1</button>
+        <div id="result1" class="test-result"></div>
+    </form>
+</section>
+
+<h2 onclick="toggleSection('test2', this)">Test 2 - Herramientas y tendencias</h2>
+<section id="test2">
+    <form id="quizForm2" onsubmit="return submitQuiz('quizForm2', 'result2')">
+        <div class="test-question">
+            <p>1. ¿Cuál es una herramienta popular para UI/UX?</p>
+            <label><input type="radio" name="q1" value="a"> Figma</label>
+            <label><input type="radio" name="q1" value="b"> Microsoft Word</label>
+            <label><input type="radio" name="q1" value="c"> Calculadora</label>
+        </div>
+        <div class="test-question">
+            <p>2. ¿Qué tecnología emergente influye en el diseño digital?</p>
+            <label><input type="radio" name="q2" value="a"> Inteligencia Artificial</label>
+            <label><input type="radio" name="q2" value="b"> Telégrafos</label>
+            <label><input type="radio" name="q2" value="c"> Maquinas de escribir</label>
+        </div>
+        <div class="test-question">
+            <p>3. ¿Qué tipo de diseño se enfoca en interacciones inmersivas?</p>
+            <label><input type="radio" name="q3" value="a"> Realidad Aumentada (RA)</label>
+            <label><input type="radio" name="q3" value="b"> Diseño impreso</label>
+            <label><input type="radio" name="q3" value="c"> Diseño de logotipos 2D</label>
+        </div>
+        <div class="test-question">
+            <p>4. ¿Qué es una interfaz conversacional (CUI)?</p>
+            <label><input type="radio" name="q4" value="a"> Interacción a través de comandos de voz o texto</label>
+            <label><input type="radio" name="q4" value="b"> Solo interfaces visuales</label>
+            <label><input type="radio" name="q4" value="c"> Un tipo de base de datos</label>
+        </div>
+        <div class="test-question">
+            <p>5. ¿Cuál es el rol de las microinteracciones?</p>
+            <label><input type="radio" name="q5" value="a"> Mejorar usabilidad y deleite del usuario</label>
+            <label><input type="radio" name="q5" value="b"> Distraer al usuario</label>
+            <label><input type="radio" name="q5" value="c"> Aumentar la complejidad</label>
+        </div>
+        <div class="test-question">
+            <p>6. ¿Qué herramienta de prototipado se menciona?</p>
+            <label><input type="radio" name="q6" value="a"> InVision</label>
+            <label><input type="radio" name="q6" value="b"> Excel</label>
+            <label><input type="radio" name="q6" value="c"> PowerPoint</label>
+        </div>
+        <div class="test-question">
+            <p>7. ¿Qué busca el diseño sostenible?</p>
+            <label><input type="radio" name="q7" value="a"> Minimizar el impacto ambiental</label>
+            <label><input type="radio" name="q7" value="b"> Ignorar el impacto ambiental</label>
+            <label><input type="radio" name="q7" value="c"> Solo el beneficio económico</label>
+        </div>
+        <div class="test-question">
+            <p>8. ¿Qué lenguaje es fundamental para el desarrollo web?</p>
+            <label><input type="radio" name="q8" value="a"> HTML</label>
+            <label><input type="radio" name="q8" value="b"> Latín</label>
+            <label><input type="radio" name="q8" value="c"> Griego antiguo</label>
+        </div>
+        <div class="test-question">
+            <p>9. ¿Cuál es el futuro del diseño digital?</p>
+            <label><input type="radio" name="q9" value="a"> Mayor integración con tecnologías inteligentes</label>
+            <label><input type="radio" name="q9" value="b"> Retorno a diseños estáticos</label>
+            <label><input type="radio" name="q9" value="c"> Menos enfoque en el usuario</label>
+        </div>
+        <div class="test-question">
+            <p>10. ¿Qué se utiliza para análisis de datos de usuario?</p>
+            <label><input type="radio" name="q10" value="a"> Google Analytics</label>
+            <label><input type="radio" name="q10" value="b"> Un diccionario</label>
+            <label><input type="radio" name="q10" value="c"> Una enciclopedia</label>
+        </div>
+        <button type="submit" class="btn-submit">Enviar Test 2</button>
+        <div id="result2" class="test-result"></div>
+    </form>
+</section>
+
+<h2 onclick="toggleSection('test3', this)">Test 3 - Impacto y aplicaciones</h2>
+<section id="test3">
+    <form id="quizForm3" onsubmit="return submitQuiz('quizForm3', 'result3')">
+        <div class="test-question">
+            <p>1. ¿Qué empresa revolucionó el consumo de música con su diseño?</p>
+            <label><input type="radio" name="q1" value="a"> Spotify</label>
+            <label><input type="radio" name="q1" value="b"> Blockbuster</label>
+            <label><input type="radio" name="q1" value="c"> Kodak</label>
+        </div>
+        <div class="test-question">
+            <p>2. ¿Cómo impactó Airbnb el sector de viajes?</p>
+            <label><input type="radio" name="q2" value="a"> Facilitando la conexión entre anfitriones y viajeros</label>
+            <label><input type="radio" name="q2" value="b"> Construyendo hoteles tradicionales</label>
+            <label><input type="radio" name="q2" value="c"> Limitando las opciones de alojamiento</label>
+        </div>
+        <div class="test-question">
+            <p>3. ¿Qué servicio simplificó la comunicación empresarial?</p>
+            <label><input type="radio" name="q3" value="a"> Slack</label>
+            <label><input type="radio" name="q3" value="b"> Correo postal</label>
+            <label><input type="radio" name="q3" value="c"> Mensajería instantánea tradicional</label>
+        </div>
+        <div class="test-question">
+            <p>4. ¿Qué ha hecho Google Maps en la navegación?</p>
+            <label><input type="radio" name="q4" value="a"> Hizo la navegación accesible para millones</label>
+            <label><input type="radio" name="q4" value="b"> La hizo más compleja</label>
+            <label><input type="radio" name="q4" value="c"> Solo funciona en áreas rurales</label>
+        </div>
+        <div class="test-question">
+            <p>5. ¿Qué demuestra el éxito de estos casos?</p>
+            <label><input type="radio" name="q5" value="a"> El diseño puede generar impacto en satisfacción y éxito empresarial</label>
+            <label><input type="radio" name="q5" value="b"> El diseño no influye en el éxito</label>
+            <label><input type="radio" name="q5" value="c"> Solo la publicidad es clave</label>
+        </div>
+        <div class="test-question">
+            <p>6. ¿Qué busca el diseño en el sector educativo?</p>
+            <label><input type="radio" name="q6" value="a"> Crear plataformas virtuales de aprendizaje</label>
+            <label><input type="radio" name="q6" value="b"> Limitar el acceso a la información</label>
+            <label><input type="radio" name="q6" value="c"> Solo libros de texto físicos</label>
+        </div>
+        <div class="test-question">
+            <p>7. ¿Cómo impacta el diseño en el comercio electrónico?</p>
+            <label><input type="radio" name="q7" value="a"> Mejorando la experiencia de compra online</label>
+            <label><input type="radio" name="q7" value="b"> Disminuyendo las ventas online</label>
+            <label><input type="radio" name="q7" value="c"> No tiene relación</label>
+        </div>
+        <div class="test-question">
+            <p>8. ¿Qué es importante en el diseño de aplicaciones de salud?</p>
+            <label><input type="radio" name="q8" value="a"> Gestión segura de datos clínicos</label>
+            <label><input type="radio" name="q8" value="b"> Compartir datos sin restricciones</label>
+            <label><input type="radio" name="q8" value="c"> No almacenar datos</label>
+        </div>
+        <div class="test-question">
+            <p>9. ¿Qué rol tiene el diseño en el entretenimiento digital?</p>
+            <label><input type="radio" name="q9" value="a"> Mejorar la interacción en juegos y streaming</label>
+            <label><input type="radio" name="q9" value="b"> Limitar el acceso a contenido</label>
+            <label><input type="radio" name="q9" value="c"> Solo crear contenido visual</label>
+        </div>
+        <div class="test-question">
+            <p>10. ¿Cuál es un beneficio del diseño en la banca digital?</p>
+            <label><input type="radio" name="q10" value="a"> Simplificar transacciones y mejorar la seguridad</label>
+            <label><input type="radio" name="q10" value="b"> Complicar el acceso a cuentas</label>
+            <label><input type="radio" name="q10" value="c"> Solo operar en sucursales físicas</label>
+        </div>
+        <button type="submit" class="btn-submit">Enviar Test 3</button>
+        <div id="result3" class="test-result"></div>
+    </form>
+</section>
+
+<h2 onclick="toggleSection('test4', this)">Test 4 - Ética y desafíos</h2>
+<section id="test4">
+    <form id="quizForm4" onsubmit="return submitQuiz('quizForm4', 'result4')">
+        <div class="test-question">
+            <p>1. ¿Qué riesgo ético surge en el diseño con IA?</p>
+            <label><input type="radio" name="q1" value="a"> Sesgos algorítmicos</label>
+            <label><input type="radio" name="q1" value="b"> Demasiada precisión</label>
+            <label><input type="radio" name="q1" value="c"> Falta de automatización</label>
+        </div>
+        <div class="test-question">
+            <p>2. ¿Qué desafío implica la privacidad de datos?</p>
+            <label><input type="radio" name="q2" value="a"> Proteger la información del usuario</label>
+            <label><input type="radio" name="q2" value="b"> Compartir todos los datos públicamente</label>
+            <label><input type="radio" name="q2" value="c"> Recopilar información sin consentimiento</label>
+        </div>
+        <div class="test-question">
+            <p>3. ¿Qué se busca evitar con un diseño ético?</p>
+            <label><input type="radio" name="q3" value="a"> Manipulación o adicción del usuario</label>
+            <label><input type="radio" name="q3" value="b"> Fomentar la interacción</label>
+            <label><input type="radio" name="q3" value="c"> Crear experiencias atractivas</label>
+        </div>
+        <div class="test-question">
+            <p>4. ¿Qué es un "dark pattern" en diseño?</p>
+            <label><input type="radio" name="q4" value="a"> Un patrón de diseño que engaña al usuario</label>
+            <label><input type="radio" name="q4" value="b"> Un diseño visualmente oscuro</label>
+            <label><input type="radio" name="q4" value="c"> Un diseño intuitivo y claro</label>
+        </div>
+        <div class="test-question">
+            <p>5. ¿Cuál es un desafío en la integración de nuevas tecnologías?</p>
+            <label><input type="radio" name="q5" value="a"> Compatibilidad y interoperabilidad</label>
+            <label><input type="radio" name="q5" value="b"> No innovar</label>
+            <label><input type="radio" name="q5" value="c"> Usar solo tecnologías antiguas</label>
+        </div>
+        <div class="test-question">
+            <p>6. ¿Por qué es importante considerar la brecha digital?</p>
+            <label><input type="radio" name="q6" value="a"> Para asegurar que el diseño sea accesible para todos</label>
+            <label><input type="radio" name="q6" value="b"> Para diseñar solo para un segmento específico</label>
+            <label><input type="radio" name="q6" value="c"> Ignorar a los usuarios con menos recursos</label>
+        </div>
+        <div class="test-question">
+            <p>7. ¿Qué se requiere para un diseño responsable?</p>
+            <label><input type="radio" name="q7" value="a"> Pensar en el impacto social y ambiental</label>
+            <label><input type="radio" name="q7" value="b"> Solo enfocarse en ganancias</label>
+            <label><input type="radio" name="q7" value="c"> No considerar las consecuencias</label>
+        </div>
+        <div class="test-question">
+            <p>8. ¿Qué sucede con la sobrecarga de información?</p>
+            <label><input type="radio" name="q8" value="a"> Puede abrumar al usuario</label>
+            <label><input type="radio" name="q8" value="b"> Mejora la experiencia</label>
+            <label><input type="radio" name="q8" value="c"> Es siempre beneficiosa</label>
+        </div>
+        <div class="test-question">
+            <p>9. ¿Cómo se mitiga el riesgo de sesgos en el diseño?</p>
+            <label><input type="radio" name="q9" value="a"> Diversificando equipos y probando con usuarios variados</label>
+            <label><input type="radio" name="q9" value="b"> Ignorando la diversidad</label>
+            <label><input type="radio" name="q9" value="c"> Solo diseñando para un grupo demográfico</label>
+        </div>
+        <div class="test-question">
+            <p>10. ¿Cuál es un desafío clave para el diseñador del futuro?</p>
+            <label><input type="radio" name="q10" value="a"> Adaptarse a tecnologías en constante cambio</label>
+            <label><input type="radio" name="q10" value="b"> Mantenerse estático en sus conocimientos</label>
+            <label><input type="radio" name="q10" value="c"> Solo enfocarse en diseño tradicional</label>
+        </div>
+        <button type="submit" class="btn-submit">Enviar Test 4</button>
+        <div id="result4" class="test-result"></div>
+    </form>
+</section>
+
+<footer>
+    <p>&copy; 2025 Diseñando Futuros Digitales. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+function toggleSection(id, element) {
+    const section = document.getElementById(id);
+    const allSections = document.querySelectorAll('section');
+    const allTitles = document.querySelectorAll('h2');
+
+    // Cierra todas las demás secciones y quita la clase 'active' de sus títulos
+    allSections.forEach(sec => {
+        if (sec.id !== id && sec.classList.contains('active')) {
+            sec.classList.remove('active');
+            // Busca el h2 asociado a esta sección para quitarle el 'active'
+            const correspondingTitle = document.querySelector(`h2[onclick*="${sec.id}"]`);
+            if (correspondingTitle) {
+                correspondingTitle.classList.remove('active');
+            }
+        }
+    });
+
+    // Alterna la visibilidad de la sección actual y la clase 'active' del título clickeado
+    section.classList.toggle('active');
+    element.classList.toggle('active');
+}
+
+function submitQuiz(formId, resultId) {
+    const form = document.getElementById(formId);
+    const resultDiv = document.getElementById(resultId);
+    let score = 0;
+    const totalQuestions = form.querySelectorAll('.test-question').length;
+
+    // Respuestas correctas para cada quiz (asegúrate que estas sean las correctas)
+    const answersKey = {
+        quizForm1: ['b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        quizForm2: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        quizForm3: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        quizForm4: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a']
+    };
+
+    const userAnswers = new FormData(form);
+    let unanswered = false;
+
+    for(let i=1; i<=totalQuestions; i++) {
+        const answer = userAnswers.get('q'+i);
+        if(!answer) {
+            unanswered = true;
+            break; // Salir del bucle si falta alguna respuesta
+        }
+        // Ajustando a un array de 0-indexed para answersKey
+        if(answer === answersKey[formId][i-1]) {
+            score++;
+        }
+    }
+
+    if(unanswered) {
+        alert("Por favor, responde todas las preguntas antes de enviar.");
+        resultDiv.style.display = 'none'; // Oculta el resultado si no se responden todas
+        return false; // Evita que el formulario se envíe
+    }
+
+    resultDiv.textContent = `Puntuación: ${score} / ${totalQuestions}`;
+    resultDiv.style.display = 'block'; // Muestra el resultado
+    
+    // Deshabilita los botones de radio y el botón de enviar para evitar cambios posteriores
+    const radioButtons = form.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach(radio => radio.disabled = true);
+    form.querySelector('.btn-submit').disabled = true;
+
+    return false; // Evita la recarga de la página
+}
+</script>
+
+</body>
+</html>
